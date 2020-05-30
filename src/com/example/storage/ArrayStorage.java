@@ -2,6 +2,7 @@ package com.example.storage;
 
 import com.example.model.Resume;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -11,21 +12,21 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int storageSize = 0;
 
-    private Integer findUuid(String uuid) {
+    private int findUuid(String uuid) {
         for (int i = 0; i < storageSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
-        return null;
+        return -1;
     }
 
     public void save(Resume r) {
-        if (storageSize == 10000) {
+        if (storageSize == Array.getLength(storage)) {
             System.out.println("Невозможно сохранить резюме. Хранилище резюме переполнено.");
             return;
         }
-        if (findUuid(r.getUuid()) != null) {
+        if (findUuid(r.getUuid()) > -1) {
             System.out.format("Попытка сохранить резюме %s, которое уже есть в хранилище.\n", r.getUuid());
             return;
         }
@@ -34,36 +35,38 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        Integer f = findUuid(uuid);
-        if (f != null) {
-            return storage[f];
-        } else {
+        int index = findUuid(uuid);
+        if (index == -1) {
             System.out.format("Резюме %s не найдено.\n", uuid);
             return null;
         }
+        return storage[index];
     }
 
     public void delete(String uuid) {
-        Integer f = findUuid(uuid);
-        if (f != null) {
-            storage[f] = storage[storageSize - 1];
-            storage[storageSize - 1] = null;
-            storageSize--;
-        } else {
+        int index = findUuid(uuid);
+        if (index == -1 ) {
             System.out.format("Резюме %s не найдено.\n", uuid);
+            return;
         }
+        storage[index] = storage[storageSize - 1];
+        storage[storageSize - 1] = null;
+        storageSize--;
     }
 
     public void update(Resume resume) {
-        Integer f = findUuid(resume.getUuid());
-        if (f != null) {
-            storage[f] = resume;
-        } else {
+        int index = findUuid(resume.getUuid());
+        if (index == -1) {
             System.out.format("Резюме %s не найдено.\n", resume.getUuid());
+            return;
         }
+        storage[index] = resume;
     }
 
     public void clear() {
+        if (storageSize == 0) {
+            return;
+        }
         Arrays.fill(storage, 0, storageSize - 1, null);
         storageSize = 0;
     }
