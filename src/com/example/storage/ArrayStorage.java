@@ -65,7 +65,7 @@ public class ArrayStorage {
 
     public void clear() {
         Arrays.fill(storage, 0, storageSize - 1, null);
-        storageSize--;
+        storageSize = 0;
     }
 
     /**
