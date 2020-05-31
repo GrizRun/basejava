@@ -2,7 +2,6 @@ package com.example.storage;
 
 import com.example.model.Resume;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -12,17 +11,9 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int storageSize = 0;
 
-    private int findUuid(String uuid) {
-        for (int i = 0; i < storageSize; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     public void save(Resume r) {
-        if (storageSize == Array.getLength(storage)) {
+        if (storageSize == storage.length) {
             System.out.println("Невозможно сохранить резюме. Хранилище резюме переполнено.");
             return;
         }
@@ -63,11 +54,17 @@ public class ArrayStorage {
         storage[index] = resume;
     }
 
-    public void clear() {
-        if (storageSize == 0) {
-            return;
+    private int findUuid(String uuid) {
+        for (int i = 0; i < storageSize; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
         }
-        Arrays.fill(storage, 0, storageSize - 1, null);
+        return -1;
+    }
+
+    public void clear() {
+        Arrays.fill(storage, 0, storageSize, null);
         storageSize = 0;
     }
 
