@@ -1,4 +1,4 @@
-package com.example.exseption;
+package com.example.exception;
 
 public class StorageException extends RuntimeException {
     private final String uuid;

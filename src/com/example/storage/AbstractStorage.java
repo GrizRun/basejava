@@ -1,8 +1,8 @@
 package com.example.storage;
 
-import com.example.exseption.ExistStorageException;
-import com.example.exseption.NotExistStorageException;
-import com.example.exseption.StorageException;
+import com.example.exception.ExistStorageException;
+import com.example.exception.NotExistStorageException;
+import com.example.exception.StorageException;
 import com.example.model.Resume;
 
 import java.util.Arrays;
@@ -24,7 +24,9 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public int size() { return currentSize; }
+    public int size() {
+        return currentSize;
+    }
 
     @Override
     public void save(Resume r) {
@@ -69,7 +71,9 @@ public abstract class AbstractStorage implements Storage {
     }
 
     protected abstract int getIndex(String uuid);
+
     protected abstract void insertResume(Resume r, int index);
+
     protected abstract void fillDeleted(int index);
 
 }

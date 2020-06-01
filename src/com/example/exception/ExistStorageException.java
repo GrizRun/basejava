@@ -1,4 +1,4 @@
-package com.example.exseption;
+package com.example.exception;
 
 public class ExistStorageException extends StorageException {
     public ExistStorageException(String uuid) {
