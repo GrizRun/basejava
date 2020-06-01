@@ -31,10 +31,11 @@ public abstract class AbstractStorage implements Storage {
         if (currentSize == storage.length) {
             throw new StorageException("Storage is overflow.", r.getUuid());
         }
-        if (getIndex(r.getUuid()) > -1) {
+        int index = getIndex(r.getUuid());
+        if (index > -1) {
             throw new ExistStorageException(r.getUuid());
         }
-        insertResume(r);
+        insertResume(r, index);
         currentSize++;
     }
 
@@ -62,13 +63,13 @@ public abstract class AbstractStorage implements Storage {
         if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
-        fillVoid(index);
+        fillDeleted(index);
         storage[currentSize - 1] = null;
         currentSize--;
     }
 
     protected abstract int getIndex(String uuid);
-    protected abstract void insertResume(Resume r);
-    protected abstract void fillVoid(int index);
+    protected abstract void insertResume(Resume r, int index);
+    protected abstract void fillDeleted(int index);
 
 }
