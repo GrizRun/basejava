@@ -7,12 +7,9 @@ import com.example.model.Resume;
  */
 public class ArrayStorage extends AbstractStorage{
 
-
-
-
     @Override
     protected int getIndex(String uuid) {
-        for (int i = 0; i < curSize; i++) {
+        for (int i = 0; i < currentSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
@@ -22,15 +19,12 @@ public class ArrayStorage extends AbstractStorage{
 
     @Override
     protected void insertResume(Resume r) {
-        storage[curSize] = r;
-        curSize++;
+        storage[currentSize] = r;
     }
 
     @Override
     protected void fillVoid(int index) {
-        storage[index] = storage[curSize - 1];
-        storage[curSize - 1] = null;
-        curSize--;
+        storage[index] = storage[currentSize - 1];
     }
 
 }
