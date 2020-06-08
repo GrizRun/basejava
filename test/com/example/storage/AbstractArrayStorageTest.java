@@ -8,9 +8,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
+import static com.example.storage.AbstractArrayStorage.STORAGE_LIMIT;
 
-public abstract class AbstractStorageTest {
+public abstract class AbstractArrayStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -19,7 +19,7 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3 = new Resume(UUID_3);
     private Storage storage;
 
-    public AbstractStorageTest(Storage storage) {
+    public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -46,11 +46,9 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void clear() throws Exception {
+    public void clear() {
         storage.clear();
         Assert.assertEquals(0, storage.size());
-        Resume[] emptyStorage = new Resume[getStorageLimit()];
-        Assert.assertArrayEquals(emptyStorage, getStorage());
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -80,20 +78,19 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void saveUnderLimit() throws NoSuchFieldException, IllegalAccessException {
+    public void saveUnderLimit()  {
         storage.clear();
-        int limit = getStorageLimit();
-        for (int i = 0; i < limit; i++) {
+        for (int i = 0; i < STORAGE_LIMIT; i++) {
             storage.save(new Resume());
         }
-        Assert.assertEquals(limit, storage.size());
+        Assert.assertEquals(STORAGE_LIMIT, storage.size());
     }
 
     @Test(expected = StorageException.class)
-    public void saveOverLimit() throws NoSuchFieldException, IllegalAccessException, StorageException {
+    public void saveOverLimit() throws StorageException {
         storage.clear();
         int limit;
-        limit = getStorageLimit() + 1;
+        limit = STORAGE_LIMIT + 1;
         for (int i = 0; i < limit; i++) {
             storage.save(new Resume());
         }
@@ -125,15 +122,4 @@ public abstract class AbstractStorageTest {
         storage.get(UUID_1);
     }
 
-    private int getStorageLimit() throws NoSuchFieldException, IllegalAccessException {
-        Field storageLimit = storage.getClass().getSuperclass().getDeclaredField("STORAGE_LIMIT");
-        storageLimit.setAccessible(true);
-        return (int) storageLimit.get(storage);
-    }
-
-    private Resume[] getStorage() throws NoSuchFieldException, IllegalAccessException {
-        Field storageLimit = storage.getClass().getSuperclass().getDeclaredField("storage");
-        storageLimit.setAccessible(true);
-        return (Resume[]) storageLimit.get(storage);
-    }
 }

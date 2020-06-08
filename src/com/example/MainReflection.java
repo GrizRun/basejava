@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class mainReflection {
+public class MainReflection {
     public static void main(String[] args) throws IllegalAccessError, NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
         Storage storage = new ArrayStorage();
         Field storageLimit = storage.getClass().getSuperclass().getDeclaredField("STORAGE_LIMIT");
