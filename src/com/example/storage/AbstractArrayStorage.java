@@ -1,7 +1,5 @@
 package com.example.storage;
 
-import com.example.exception.ExistStorageException;
-import com.example.exception.NotExistStorageException;
 import com.example.exception.StorageException;
 import com.example.model.Resume;
 
@@ -29,45 +27,35 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume r) {
+    protected void saveSecured(Resume r) {
         if (currentSize == storage.length) {
             throw new StorageException("Storage is overflow.", r.getUuid());
         }
-        int index = getIndex(r.getUuid());
-        if (index > -1) {
-            throw new ExistStorageException(r.getUuid());
-        }
-        insertResume(r, index);
+        insertResume(r, getIndex(r.getUuid()));
         currentSize++;
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
+    protected Resume getSecured(String uuid) {
+        return storage[getIndex(uuid)];
     }
 
     @Override
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-        storage[index] = resume;
-    }
-
-    @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        fillDeleted(index);
+    protected void deleteSecured(String uuid) {
+        fillDeleted(getIndex(uuid));
         storage[currentSize - 1] = null;
         currentSize--;
+    }
+
+    @Override
+    protected void updateSecured(Resume resume) {
+        storage[getIndex(resume.getUuid())] = resume;
+    }
+
+
+    @Override
+    protected boolean contains(String uuid) {
+        return getIndex(uuid) >= 0;
     }
 
     protected abstract int getIndex(String uuid);

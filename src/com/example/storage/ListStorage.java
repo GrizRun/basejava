@@ -1,40 +1,67 @@
 package com.example.storage;
 
+import com.example.exception.NotExistStorageException;
 import com.example.model.Resume;
 
+import java.util.ArrayList;
+
 public class ListStorage extends AbstractStorage {
+    private static ArrayList<Resume> storage = new ArrayList<>();
+
     @Override
-    public void save(Resume r) {
-        
+    protected void saveSecured(Resume r) {
+        storage.add(r);
     }
 
     @Override
-    public Resume get(String uuid) {
-        return null;
+    protected Resume getSecured(String uuid) {
+        for (Resume r : storage) {
+            if (r.getUuid().equals(uuid)){
+                return r;
+            }
+        }
+        throw new NotExistStorageException(uuid);
     }
 
     @Override
-    public void delete(String uuid) {
-
+    protected void deleteSecured(String uuid) {
+        storage.removeIf(r -> r.getUuid().equals(uuid));
     }
 
     @Override
-    public void update(Resume resume) {
-
+    protected void updateSecured(Resume resume) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (storage.get(i).equals(resume)){
+                storage.set(i, resume);
+                return;
+            }
+        }
+        throw new NotExistStorageException(resume.getUuid());
     }
 
     @Override
     public void clear() {
-
+        storage.clear();
     }
 
     @Override
     public Resume[] getAll() {
-        return new Resume[0];
+        return (Resume[]) storage.toArray();
     }
 
     @Override
     public int size() {
-        return 0;
+        return storage.size();
     }
+
+    @Override
+    protected boolean contains(String uuid) {
+        for (Resume resume : storage) {
+            if (resume.getUuid().equals(uuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
