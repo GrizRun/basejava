@@ -1,14 +1,14 @@
 package com.example;
 
 import com.example.model.Resume;
-import com.example.storage.SortedArrayStorage;
+import com.example.storage.ListStorage;
 import com.example.storage.Storage;
 
 /**
  * Test for your com.example.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    static final Storage ARRAY_STORAGE = new ListStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid3");
@@ -23,7 +23,7 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         //System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
-        printAll();
+        //printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
         printAll();
         ARRAY_STORAGE.clear();
