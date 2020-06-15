@@ -1,6 +1,5 @@
 package com.example.storage;
 
-import com.example.exception.NotExistStorageException;
 import com.example.model.Resume;
 
 import java.util.ArrayList;
@@ -9,34 +8,33 @@ public class ListStorage extends AbstractStorage {
     private static ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
-    protected void saveSecured(Resume r) {
+    protected void saveSecured(Resume r, int i) {
         storage.add(r);
     }
 
     @Override
-    protected Resume getSecured(String uuid) {
-        for (Resume r : storage) {
-            if (r.getUuid().equals(uuid)){
-                return r;
-            }
-        }
-        throw new NotExistStorageException(uuid);
+    protected Resume getSecured(String uuid, int i) {
+        return storage.get(i);
     }
 
     @Override
-    protected void deleteSecured(String uuid) {
-        storage.removeIf(r -> r.getUuid().equals(uuid));
+    protected void deleteSecured(String uuid, int i) {
+        storage.remove(i);
     }
 
     @Override
-    protected void updateSecured(Resume resume) {
+    protected void updateSecured(Resume resume, int i) {
+        storage.set(i, resume);
+    }
+
+    @Override
+    protected int getIndex(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).equals(resume)){
-                storage.set(i, resume);
-                return;
+            if (storage.get(i).getUuid().equals(uuid)){
+                return i;
             }
         }
-        throw new NotExistStorageException(resume.getUuid());
+        return -1;
     }
 
     @Override
@@ -52,16 +50,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
-    }
-
-    @Override
-    protected boolean contains(String uuid) {
-        for (Resume resume : storage) {
-            if (resume.getUuid().equals(uuid)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

@@ -27,36 +27,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveSecured(Resume r) {
+    protected void saveSecured(Resume r, int i) {
         if (currentSize == storage.length) {
             throw new StorageException("Storage is overflow.", r.getUuid());
         }
-        insertResume(r, getIndex(r.getUuid()));
+        insertResume(r, i);
         currentSize++;
     }
 
     @Override
-    protected Resume getSecured(String uuid) {
-        return storage[getIndex(uuid)];
+    protected Resume getSecured(String uuid, int i) {
+        return storage[i];
     }
 
     @Override
-    protected void deleteSecured(String uuid) {
-        fillDeleted(getIndex(uuid));
+    protected void deleteSecured(String uuid, int i) {
+        fillDeleted(i);
         storage[currentSize - 1] = null;
         currentSize--;
     }
 
     @Override
-    protected void updateSecured(Resume resume) {
-        storage[getIndex(resume.getUuid())] = resume;
+    protected void updateSecured(Resume resume, int i) {
+        storage[i] = resume;
     }
 
-
-    @Override
-    protected boolean contains(String uuid) {
-        return getIndex(uuid) >= 0;
-    }
 
     protected abstract int getIndex(String uuid);
 
