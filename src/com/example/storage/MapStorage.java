@@ -2,11 +2,13 @@ package com.example.storage;
 
 import com.example.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    private Map<String, Resume> storage = new HashMap<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected Object getSearchKey(String uuid) {
@@ -23,13 +25,13 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(String uuid, Object key) {
-        return storage.get(uuid);
+    protected Resume doGet(Object key) {
+        return storage.get(key);
     }
 
     @Override
-    protected void doDelete(String uuid, Object key) {
-        storage.remove(uuid);
+    protected void doDelete(Object key) {
+        storage.remove(key);
     }
 
     @Override
@@ -48,8 +50,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAllArray() {
-        return storage.values().toArray(new Resume[0]);
+    public List<Resume> getAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override

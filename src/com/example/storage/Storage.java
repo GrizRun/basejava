@@ -15,8 +15,6 @@ public interface Storage {
 
     void clear();
 
-    Resume[] getAllArray();
-
     List<Resume> getAllSorted();
 
     int size();

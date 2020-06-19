@@ -3,6 +3,7 @@ package com.example.storage;
 import com.example.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
     private static ArrayList<Resume> storage = new ArrayList<>();
@@ -13,12 +14,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(String uuid, Object key) {
+    protected Resume doGet(Object key) {
         return storage.get((int) key);
     }
 
     @Override
-    protected void doDelete(String uuid, Object key) {
+    protected void doDelete(Object key) {
         storage.remove((int)key);
     }
 
@@ -48,8 +49,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAllArray() {
-        return storage.toArray(new Resume[0]);
+    public List<Resume> getAll() {
+        return storage;
     }
 
     @Override

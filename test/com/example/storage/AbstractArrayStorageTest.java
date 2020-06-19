@@ -5,6 +5,8 @@ import com.example.model.Resume;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static com.example.storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
@@ -17,7 +19,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     public void saveUnderLimit()  {
         storage.clear();
         for (int i = 0; i < STORAGE_LIMIT; i++) {
-            storage.save(new Resume());
+            storage.save(new Resume(UUID.randomUUID().toString()));
         }
         Assert.assertEquals(STORAGE_LIMIT, storage.size());
     }
@@ -28,7 +30,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         int limit;
         limit = STORAGE_LIMIT + 1;
         for (int i = 0; i < limit; i++) {
-            storage.save(new Resume());
+            storage.save(new Resume(UUID.randomUUID().toString()));
         }
     }
 
