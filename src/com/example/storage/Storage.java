@@ -2,6 +2,8 @@ package com.example.storage;
 
 import com.example.model.Resume;
 
+import java.util.List;
+
 public interface Storage {
     void save(Resume r);
 
@@ -13,7 +15,9 @@ public interface Storage {
 
     void clear();
 
-    Resume[] getAll();
+    Resume[] getAllArray();
+
+    List<Resume> getAllSorted();
 
     int size();
 }

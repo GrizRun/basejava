@@ -4,7 +4,21 @@ import com.example.exception.ExistStorageException;
 import com.example.exception.NotExistStorageException;
 import com.example.model.Resume;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
+
+
+    protected static final Comparator<Resume> resumeFullNameComparator = (o1, o2) -> {
+        int fullNameCompare = o1.getFullName().compareTo(o2.getFullName());
+        if (fullNameCompare != 0) {
+            return fullNameCompare;
+        } else {
+            return o1.getUuid().compareTo(o2.getUuid());
+        }
+    };
 
     @Override
     public void save(Resume r) {
@@ -30,6 +44,12 @@ public abstract class AbstractStorage implements Storage {
         doUpdate(r, key);
     }
 
+    @Override
+    public List<Resume> getAllSorted() {
+        Resume[] resumes = getAllArray();
+        Arrays.sort(resumes, resumeFullNameComparator);
+        return Arrays.asList(resumes);
+    }
 
     protected abstract Object getSearchKey(String uuid);
 
@@ -58,5 +78,4 @@ public abstract class AbstractStorage implements Storage {
     }
 
     protected abstract boolean isExist(Object searchKey);
-
 }

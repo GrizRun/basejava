@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractStorageTest {
     private static final String UUID_1 = "uuid1";
@@ -38,11 +38,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] actualResume = storage.getAll();
+        List<Resume> listActualResume = storage.getAllSorted();
+        Resume[] arrayActualResume = listActualResume.toArray(new Resume[0]);
         Resume[] expectedResume = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        Assert.assertEquals(3, actualResume.length);
-        Arrays.sort(actualResume);
-        Assert.assertArrayEquals(expectedResume, actualResume);
+        Assert.assertArrayEquals(expectedResume, arrayActualResume);
     }
 
     @Test

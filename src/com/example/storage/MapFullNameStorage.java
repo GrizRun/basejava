@@ -5,16 +5,17 @@ import com.example.model.Resume;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class MapFullNameStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected Object getSearchKey(String uuid) {
-        if (storage.containsKey(uuid)) {
-            return uuid;
-        } else {
-            return null;
+        for (Map.Entry<String, Resume> entry : storage.entrySet()) {
+            if (entry.getKey().equals(uuid)) {
+                return entry.getValue().getFullName();
+            }
         }
+        return null;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume resume, Object key) {
-        storage.replace((String) key, resume);
+        storage.replace(resume.getUuid(), resume);
     }
 
     @Override
