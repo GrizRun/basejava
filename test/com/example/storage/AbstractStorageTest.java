@@ -15,9 +15,9 @@ public abstract class AbstractStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_1 = new Resume("EmptyName", UUID_1);
-    private static final Resume RESUME_2 = new Resume("EmptyName", UUID_2);
-    private static final Resume RESUME_3 = new Resume("EmptyName", UUID_3);
+    private static final Resume RESUME_1 = new Resume("Ivanov Ivan", UUID_1);
+    private static final Resume RESUME_2 = new Resume("Ivanov Ivan", UUID_2);
+    private static final Resume RESUME_3 = new Resume("DefaultName", UUID_3);
     protected Storage storage;
 
     public AbstractStorageTest(Storage storage) {
@@ -27,9 +27,9 @@ public abstract class AbstractStorageTest {
     @Before
     public void setUp() {
         storage.clear();
-        storage.save(new Resume("EmptyName", UUID_1));
-        storage.save(new Resume("EmptyName", UUID_2));
-        storage.save(new Resume("EmptyName", UUID_3));
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
 
     }
 
@@ -41,8 +41,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> actualResume = storage.getAllSorted();
-        List<Resume> expectedResume = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
-        Assert.assertEquals(actualResume, expectedResume);
+        List<Resume> expectedResume = Arrays.asList(RESUME_3, RESUME_1, RESUME_2);
+        Assert.assertEquals(expectedResume, actualResume);
     }
 
     @Test
@@ -65,16 +65,16 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveAlreadyExist() throws ExistStorageException {
-        Resume uuid1 = new Resume("EmptyName","uuid1");
-        storage.save(uuid1);
+        Resume resume = new Resume("EmptyName","uuid1");
+        storage.save(resume);
     }
 
     @Test
     public void saveNewResume() {
-        Resume r = new Resume(UUID.randomUUID().toString());
-        storage.save(r);
+        Resume resume = new Resume(UUID.randomUUID().toString());
+        storage.save(resume);
         Assert.assertEquals(4, storage.size());
-        Assert.assertEquals(r, storage.get(r.getUuid()));
+        Assert.assertEquals(resume, storage.get(resume.getUuid()));
     }
 
 
